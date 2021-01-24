@@ -9,7 +9,7 @@ var PORT = process.env.PORT || 2300;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
+// save notes array 
 
 
 
@@ -21,6 +21,41 @@ app.use(express.json());
 
 // require("./routes/apiRoutes")(app);
 // require("./routes/htmlRoutes")(app);
+
+// maybe you are trying to do this route by itself, but if you want to do this in here let's try this 
+
+// when I give the local host a / it will send me INDEX as a response 
+app.get("/", (req, res)=>{
+  res.sendFile(path.join(__dirname, "./public/index.html"))
+})
+
+
+// when I give the local host a /note, it will send Notes as a response 
+app.get("/notes", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/notes.html"))
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
