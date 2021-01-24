@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // save notes array 
-
+var savedNotes =[];
 
 
 // ================================================================================
@@ -37,14 +37,29 @@ app.get("/notes", (req, res) => {
 
 
 
+// display all NOTES 
+app.get("/api/notes", (req, res)=>{
+  return res.json(notes)
+})
+
+ // API POST Requests
 
 
+ app.post("/api/notes/:new", function(req, res) {
+  // req.body hosts is equal to the JSON post sent from the user
+  // This works because of our body parsing middleware
+  var newNotes = req.body;
 
+  // Using a RegEx Pattern to remove spaces from newCharacter
+  // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+  newNotes.title = newNotes.name.replace(/\s+/g, "").toLowerCase();
 
+  console.log(newSaved);
 
-
-
-
+  savedNotes.push(newSaved);
+  res.json(newcharacter);
+});
+  
 
 
 
