@@ -1,121 +1,159 @@
-var express = require("express");
-var path = require("path")
+const express = require("express");
+const path = require("path");
+const fs = require("fs");
 
-// set up express
-var app = express();
-var PORT = process.env.PORT || 6000;
+const app = express();
+const port = 4040;
+const mainDir = path.join(__dirname, "/public");
 
-// handle data parsing
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-app.use(express.static("public"))
 
-// save notes array 
-// var savedNotes =[];
-var router = require("express").Router();
-var store = require("./store");
-
-router.get("/notes",(req, res)=>{
-  store
-  .getNotes()
-  .then((notes)=> res.json(notes))
-  .catch ((err)=> res.status (500).json(err))
+app.get("*", function(req, res) {
+  res.sendFile(path.join(mainDir, "index.html"));
 });
 
-router.post( "/notes",(req, res)=>{
-  store
-  .addNote(req.body)
-  .then((notes)=> res.json(note))
-  .catch ((err)=> res.status (500).json(err))
+app.get("/notes", function(req, res) {
+    res.sendFile(path.join(mainDir, "notes.html"));
+});
+
+app.get("/api/notes", function(req, res) {
+    res.sendFile(path.join(__dirname, "/db/db.json"));
+});
+
+app.get("/api/notes/:id", function(req, res) {
+    let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    res.json(savedNotes[Number(req.params.id)]);
+});
+
+app.post("/api/notes", function(req, res) {
+    let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    let newNote = req.body;
+    let uniqueID = (savedNotes.length).toString();
+    newNote.id = uniqueID;
+    savedNotes.push(newNote);
+
+    fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes));
+    console.log("Note saved to db.json. Content: ", newNote);
+    res.json(savedNotes);
+})
+
+app.delete("/api/notes/:id", function(req, res) {
+    let savedNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+    let noteID = req.params.id;
+    let newID = 0;
+    console.log(`Deleting note with ID ${noteID}`);
+    savedNotes = savedNotes.filter(currNote => {
+        return currNote.id != noteID;
+    })
+    
+    for (currNote of savedNotes) {
+        currNote.id = newID.toString();
+        newID++;
+    }
+
+    fs.writeFileSync("./db/db.json", JSON.stringify(savedNotes));
+    res.json(savedNotes);
+})
+
+app.listen(port, function() {
+    console.log(`Now listening to port ${port}. Enjoy your stay!`);
+})
+
+
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const util = require('util');
+const app = express();
+const PORT = process.env.PORT || 3000;
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
+
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json());
+app.use(express.static(__dirname + '/public'));
+
+
+app.get("/notes", (req,res)=>{
+    res.sendFile(path.join(__dirname, "public/notes.html"));
+});
+app.get("/api/notes", (req,res)=>{
+
+    readFileAsync("./db/db.json", "utf8")
+    .then((result, err)=>{
+        if(err) console.log(err);       
+        return res.json(JSON.parse(result));       
+    });     
+});
+
+app.get("*", (req,res)=>{
+    res.sendFile(path.join(__dirname, "public/index.html"));
+});
+
+//save note
+app.post("/api/notes", (req,res)=>{
+    let newNote = req.body;
+   
+    readFileAsync("./db/db.json", "utf8")
+    .then((result, err)=>{
+        if(err) console.log(err);
+        return Promise.resolve(JSON.parse(result));               
+    })
+    .then(data =>{
+     
+        newNote.id = getLastIndex(data) + 1;
+        
+        (data.length > 0)? data.push(newNote):data = [newNote];
+        return Promise.resolve(data);
+    })
+    .then(data =>{
+        //write the new file
+        writeFileAsync("./db/db.json", JSON.stringify(data));
+        res.json(newNote);
+    })
+    .catch(err =>{
+        if(err) throw err;
+    });
+});
+
+//delete note
+app.delete('/api/notes/:id', (req,res)=>{
+    
+    let id = req.params.id;
+      
+    readFileAsync("./db/db.json", "utf8")
+    .then((result, err)=>{
+        if(err) console.log(err);
+        return Promise.resolve(JSON.parse(result));               
+    })
+    .then(data =>{
+             
+        data.splice(data.indexOf(data.find(element => element.id == id)),1);
+        return Promise.resolve(data);
+    })
+    .then(data =>{
+        
+        writeFileAsync("./db/db.json", JSON.stringify(data));
+        res.send("OK");
+    })
+    .catch(err =>{
+        if(err) throw err;
+    });
 });
 
 
+app.use(function (req, res, next) {
+  res.status(404).send("Sorry can't find that!")
+})
 
-router.delete("/notes/:id", (req, res) => {
-  store
-    .removeNote(req.params.id)
-    .then(() => res.json({ ok: true }))
-    .catch((err) => res.status(500).json(err));
+//start the server
+app.listen(PORT, function(){
+    console.log(`Listening on PORT ${PORT}`);
 });
-
-var path = require ("path")
-
-// "/notes" responds with the notes.html file
-router.get("/notes", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/notes.html"));
-});
-// All other routes respond with the index.html file
-router.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/index.html"));
-});
-
-
-
-
-
-
-app.listen(PORT, function() {
-  console.log("App listening on PORT: " + PORT);
-});
-
-
-// practice 
-
-// third try 
-// Dependencies
-// =============================================================
-// const express = require("express");
-// const fs = require("fs");
-
-
-// // Sets up the Express App
-// // =============================================================
-// var app = express();
-// var PORT = process.env.PORT || 2600
-
-
-// // Sets up the Express app to handle data parsing
-// // =============================================================
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-// app.use("/assets", express.static("./assets"));
-
-
-// require("./routes/htmlappRoutes")(app);
-// require("./routes/apiRoutes")(app);
-
-// // Starts the server to begin listening
-// // =============================================================
-// app.listen(PORT, function() {
-//     console.log("App listening on PORT " + PORT);
-// });
-
-
-// FOURTH TRY 
-// 
-// 
-// 
-// 1. Dependencies
-// var express = require("express");
-// var fs = require("fs");
-// // 2. I'm creating an 'express' server called app
-// var app = express();
-
-// // 3. Sets a port or run at 7000, Later listener will listen this
-// var PORT = process.env.PORT || 2700;
-
-// //4. Use a middleware to parse the JSON data
-// app.use(express.urlencoded({ extended: true}));
-// app.use(express.json());
-// //what folder the browser can see
-// app.use(express.static("./public"));
-
-// //5. Bring routes
-// require("./routes/apiRoutes")(app);
-// require("./routes/htmlappRoutes")(app);
-
-// //6. Listener
-// app.listen(PORT, function() {
-//     console.log("App listening on PORT: " + PORT);
-// });
+function getLastIndex(data){
+    if (data.length > 0) return data[data.length-1].id;
+    return 0;
+}

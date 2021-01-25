@@ -1,3 +1,42 @@
+// MAIN COURSE 
+// Main Course 
+const noteData = require('../db/db.json');
+// ===============================================================================
+// ROUTING
+// start API ROUTES! this will need
+// one get, one post, one delete (line 14,23, 31 in index.js)
+// ===============================================================================
+const noteList = []
+
+
+module.exports = function(app) {
+// // Below code handles when users "visit" a page.
+  app.get("/api/notes", function(req, res){
+    
+    res.json(notes)
+  })
+
+  // API POST Requests
+  app.post("/api/notes", function(req, res) {
+    // req.body is available since we're using the body parsing middleware
+    let newNote= req.body 
+    noteData.push(newNote);
+  });
+
+  // API deletes specific notes 
+  app.delete("api/notes/:id", function(req, res) {
+    var  noteId = req.body.noteId;
+    var temp = [];
+    for(var i= 0; i < noteList.length; i ++ )
+    if (i !== parseInt(noteId)){
+      temp.push(noteList[i]);
+    }
+    noteList= temp;
+    res.send("note deleted")
+  });
+
+};
+
 
 
 // var notes = require("../db/db.json")
@@ -150,3 +189,5 @@
 //     });
         
 // };
+
+
