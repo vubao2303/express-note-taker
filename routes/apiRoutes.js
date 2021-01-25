@@ -13,14 +13,16 @@ module.exports = function(app) {
 // // Below code handles when users "visit" a page.
   app.get("/api/notes", function(req, res){
     
-    res.json(notes)
+    res.json(noteData)
   })
 
   // API POST Requests
   app.post("/api/notes", function(req, res) {
     // req.body is available since we're using the body parsing middleware
     let newNote= req.body 
+    console.log(newNote)
     noteData.push(newNote);
+    res.json(newNote)
   });
 
   // API deletes specific notes 

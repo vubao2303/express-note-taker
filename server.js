@@ -3,7 +3,7 @@ var express = require("express");
 
 // set up express
 var app = express();
-var PORT = process.env.PORT || 2303;
+var PORT = process.env.PORT || 2305;
 
 // handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -12,7 +12,7 @@ app.use(express.json());
 // ================================================================================
 // ROUTER
 
-// require("./routes/apiRoutes")(app);
+require("./routes/apiRoutes")(app);
 require("./routes/htmlappRoutes")(app);
 
 // LISTENER
