@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/vubao2303/express-note-taker#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "store": "^2.0.12"
   }
 }
