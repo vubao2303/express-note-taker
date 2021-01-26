@@ -1,21 +1,18 @@
-// short codes with no commment 
-const path = require('path');
-const publicFolder = path.join(__dirname, '../public')
+// // short codes with no commment 
+// const path = require('path');
+// const publicFolder = path.join(__dirname, '../public')
 
-module.exports = function(app) {
+// module.exports = function(app) {
 
-  app.get("/notes", function(req, res) {
-    res.sendFile(path.join(publicFolder, 'notes.html'));
-});
+//   app.get("/notes", function(req, res) {
+//     res.sendFile(path.join(publicFolder, 'notes.html'));
+// });
 
-  app.get("*", function(req, res) {
-  res.sendFile(path.join(publicFolder, 'index.html'));
-});
+//   app.get("*", function(req, res) {
+//   res.sendFile(path.join(publicFolder, 'index.html'));
+// });
 
-
-};
-
-
+// };
 
 
 // MAIN COURSE 
@@ -39,65 +36,30 @@ module.exports = function(app) {
 // };
 
 
+// same thing but this time I type out the whole path 
+
+// DEPENDENCIES
+// ====================================================
+var path = require("path");
 
 
+// ROUTING
+// ====================================================
+module.exports = function(app) {
+  // Route HTML GET requests to pages.
+  app.get("/notes", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/notes.html"))
+  });
+  // Default route if no matches.
+  app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/index.html"))
+  });
+}
 
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "/public/index.html"));
+// });
 
-
-
-// var path = require("path");
-
-// module.exports = function(app){
-// // when I give the local host a /note, it will send Notes as a response 
-//   app.get("/notes", (req, res) => {
-//     res.sendFile(path.join(__dirname, "../public/notes.html"))
-//   })
-//   // when I give the local host a / OR * anything  it will send me INDEX as a response 
-//   app.get("*", (req, res)=>{
-//     res.sendFile(path.join(__dirname, "../public/index.html"))
-//   })
-// }
-
-
-
-
-// third try routes 
-// const path = require("path");
-
-// module.exports = function(app) {
-    
-//     app.get("/", function(req, res) {
-//         res.sendFile(path.join(__dirname, "/../public/index.html"));
-//     });
-    
-//     app.get("/notes", function(req, res) {
-//         res.sendFile(path.join(__dirname, "/../public/notes.html"));
-//     });
-
-    
-
-
-// }
-
-
-// fourth try 
-// Path package to get the file path for the html
-// var path = require("path");
-
-// // Create a route
-// // Basic routes that sends the user first to the AJAX page
-// // Go get the html so that the user can see the page.
-
-// module.exports = function(app) {
-
-//     app.get("/notes", function(req, res) {
-//         res.sendFile(path.join(__dirname, "../public/notes.html"));
-//     });
-
-//     app.get("*", function(req, res) {
-//         res.sendFile(path.join(__dirname, "../public/index.html"));
-//     });
-
-// };
-
-
+// app.get("/notes", (req, res) => {
+//   res.sendFile(path.join(__dirname, "/public/notes.html"));
+// });

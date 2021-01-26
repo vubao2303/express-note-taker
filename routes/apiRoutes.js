@@ -1,43 +1,43 @@
 // MAIN COURSE 
 // Main Course 
-const noteData = require('../db/db.json');
-// ===============================================================================
-// ROUTING
-// start API ROUTES! this will need
-// one get, one post, one delete (line 14,23, 31 in index.js)
-// ===============================================================================
-const noteList = []
+// const noteData = require('../db/db.json');
+// // ===============================================================================
+// // ROUTING
+// // start API ROUTES! this will need
+// // one get, one post, one delete (line 14,23, 31 in index.js)
+// // ===============================================================================
+// const noteList = []
 
 
-module.exports = function(app) {
-// // Below code handles when users "visit" a page.
-  app.get("/api/notes", function(req, res){
+// module.exports = function(app) {
+// // // Below code handles when users "visit" a page.
+//   app.get("/api/notes", function(req, res){
     
-    res.json(noteData)
-  })
+//     res.json(noteData)
+//   })
 
-  // API POST Requests
-  app.post("/api/notes", function(req, res) {
-    // req.body is available since we're using the body parsing middleware
-    let newNote= req.body 
-    console.log(newNote)
-    noteData.push(newNote);
-    res.json(newNote)
-  });
+//   // API POST Requests
+//   app.post("/api/notes", function(req, res) {
+//     // req.body is available since we're using the body parsing middleware
+//     let newNote= req.body 
+//     console.log(newNote)
+//     noteData.push(newNote);
+//     res.json(newNote)
+//   });
 
-  // API deletes specific notes 
-  app.delete("api/notes/:id", function(req, res) {
-    var  noteId = req.body.noteId;
-    var temp = [];
-    for(var i= 0; i < noteList.length; i ++ )
-    if (i !== parseInt(noteId)){
-      temp.push(noteList[i]);
-    }
-    noteList= temp;
-    res.send("note deleted")
-  });
+//   // API deletes specific notes 
+//   app.delete("api/notes/:id", function(req, res) {
+//     var  noteId = req.body.noteId;
+//     var temp = [];
+//     for(var i= 0; i < noteList.length; i ++ )
+//     if (i !== parseInt(noteId)){
+//       temp.push(noteList[i]);
+//     }
+//     noteList= temp;
+//     res.send("note deleted")
+//   });
 
-};
+// };
 
 
 
@@ -193,3 +193,271 @@ module.exports = function(app) {
 // };
 
 
+// ok, I am very tired but let's do this one more time 
+// LOAD DATA
+// ====================================================
+// const fs = require('fs');
+// const notes = require("../db/db.json");
+// const uuid = require("uuid");
+
+
+// // ROUTING
+// // ====================================================
+// module.exports = function(app) {
+//   // GET ALL NOTES
+//   app.get("/api/notes", (req, res) => res.json(notes));
+
+//   // ADD NEW NOTE
+//   app.post("/api/notes", (req, res) => {
+//     // Create a new note.
+//     const newNote = {
+//       id: uuid.v4(),
+//       title: req.body.title,
+//       text: req.body.text
+//     };
+//     notes.push(newNote); // Add new note to notes array.
+//     res.json(notes); // Respond with all notes, including new.
+//   });
+
+//   // MODIFY NOTE
+//   app.put("/api/notes/:id", (req, res) => {
+//     // Find note in array.
+//     const found = notes.some(note => note.id === parseInt(req.params.id));
+//     // IF note exists...
+//     if (found) {
+//       const updNote = req.body; // Assign updated data to variable.
+//       notes.forEach(note => { // Loop through notes array.
+//         if (note.id === parseInt(req.params.id)) { // IF note found THEN...
+//           note.title = updNote.title ? updNote.title : note.title; // Change title IF updated.
+//           note.text = updNote.text ? updNote.text : note.text; // Change text IF updated.
+//           res.json(note); // Respond with updated note.
+//         } else {
+//           // ELSE change status code and respond with error message.
+//           res.status(400).json({ msg: "Note not found"});
+//         }
+//       })
+//     }
+//   })
+
+//   // DELETE NOTE
+//   app.delete("/api/notes/:id", (req, res) => {
+//     // Find note in array.
+//     const found = notes.some(note => note.id === parseInt(req.params.id));
+//     // IF note exists...
+//     if (found) {
+//       const updNote = req.body; // Assign updated data to variable.
+//       notes.forEach(note => { // Loop through notes array.
+//         if (note.id === parseInt(req.params.id)) { // IF note found THEN...
+//           // Respond with all notes EXCEPT the one deleted.
+//           res.json(notes.filter(note => note.id !== parseInt(req.params.id)))
+//         } else {
+//           // ELSE change status code and respond with error message.
+//           res.status(400).json({ msg: "Note not found"});
+//         }
+//       })
+//     }
+//   })
+// }
+
+
+// huh? what now?
+
+
+// const fs = require('fs');
+// const path = require('path');
+// const express = require('express');
+// const notesDb = require('../db/db.json');
+
+// // const app = express();
+
+// // app.use(express.json());
+
+
+// module.exports = function(app) {
+// // display notes 
+// //   app.get("/api/notes", (req, res) => {
+// //     fs.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
+// //         if (err) throw err;
+// //         res.json(JSON.parse(data));
+// //     });
+// // });
+// // API GET Requests
+//   // Below code handles when users "visit" a page.
+//   app.get("/api/notes", (req, res) => {
+//     res.json(notesDb);
+//   });
+
+
+
+// app.get('/notes', (req, res) => {
+//   if (notesDB.length > 0) {
+//     for (let i = 0; i < notesDB.length; i++) {
+//       notesDB[i].id = i + 1;
+//     }
+//   }
+
+//   res.json(notesDB);
+// });
+
+// app.post('/notes', (req, res) => {
+//   const newNote = req.body;
+//   let noteID = notesDB.length + 1;
+
+//   newNote.id = noteID;
+
+//   notesDB.push(newNote);
+
+//   fs.writeFile(
+//     path.join(__dirname, noteDb),
+//     JSON.stringify(notesDB),
+//     err => {
+//       if (err) throw err;
+//     }
+//   );
+
+//   res.json(newNote);
+// });
+
+// app.delete('/notes/:id', (req, res) => {
+//   const id = req.params.id;
+
+//   notesDB.splice(
+//     notesDB.findIndex(note => note.id.toString() === id),
+//     1
+//   );
+
+//   fs.writeFile(
+//     path.join(__dirname, '../db/db.json'),
+//     JSON.stringify(notesDB),
+//     err => {
+//       if (err) throw err;
+//     }
+//   );
+
+//   res.json(notesDB);
+// });
+// }
+// // module.exports = app;
+
+
+
+// all togetehr now 
+
+
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
+const notesDb = require('../db/db.json');
+
+// const app = express();
+
+// app.use(express.json());
+
+
+module.exports = function(app) {
+// display notes 
+//   app.get("/api/notes", (req, res) => {
+//     fs.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
+//         if (err) throw err;
+//         res.json(JSON.parse(data));
+//     });
+// });
+// API GET Requests
+  // Below code handles when users "visit" a page.
+  // app.get("/api/notes", function(req, res)> {
+  //   res.json(notesDb);
+  // });
+
+  app.post("/api/tables", function(req, res) {
+
+    if (tableData.length > 0) {
+      tableData.push(req.body);
+      res.json(true);
+    }
+    else {
+      res.send("enter Notes")
+    }
+  });
+
+
+  app.delete("/api/notes/:id", function(req, res) {
+    const id = parseInt(req.params.id);
+    fs.readFile(path.join(__dirname, "/db/db.json"), "utf8", (err, data) => {
+        if (err) throw err;
+        const db = JSON.parse(data);
+        const newNoteList = [];
+
+        for(let i = 0; i < db.length; i++)
+        {
+            if (i !== id)
+            {
+                const newNote = {
+                    title: db[i].title,
+                    text: db[i].text,
+                    id: newNoteList.length
+                };
+
+                newNoteList.push(newNote);
+            }
+        }
+
+        fs.writeFile(path.join(__dirname, "/db/db.json"), JSON.stringify(newNoteList, null, 2), (err) => {
+            if (err) throw err;
+            res.json(req.body);
+        });
+    });
+});
+
+
+  
+// app.get('/notes', (req, res) => {
+//   if (notesDB.length > 0) {
+//     for (let i = 0; i < notesDB.length; i++) {
+//       notesDB[i].id = i + 1;
+//     }
+//   }
+
+//   res.json(notesDB);
+// });
+
+// app.post('/notes', (req, res) => {
+//   const newNote = req.body;
+//   let noteID = notesDB.length + 1;
+
+//   newNote.id = noteID;
+
+//   notesDB.push(newNote);
+
+//   fs.writeFile(
+//     path.join(__dirname, noteDb),
+//     JSON.stringify(notesDB),
+//     err => {
+//       if (err) throw err;
+//     }
+//   );
+
+//   res.json(newNote);
+// });
+
+// app.delete('/notes/:id', (req, res) => {
+//   const id = req.params.id;
+
+//   notesDB.splice(
+//     notesDB.findIndex(note => note.id.toString() === id),
+//     1
+//   );
+
+//   fs.writeFile(
+//     path.join(__dirname, '../db/db.json'),
+//     JSON.stringify(notesDB),
+//     err => {
+//       if (err) throw err;
+//     }
+//   );
+
+//   res.json(notesDB);
+// });
+}
+// module.exports = app;
+
+//  all in one because I don't know how to split them 
