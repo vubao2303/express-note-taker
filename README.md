@@ -117,7 +117,7 @@ app.listen(PORT, function () {
 * **B Tram Vu** 
 
 - [Link to Portfolio Site](https://vubao2303.github.io/portfolio/)
-- [Link to Github](https://github.com/vubao2303/express-note-taker)
+- [Link to Github](https://github.com/vubao2303)
 - [Link to LinkedIn](https://www.linkedin.com/in/tram-vu-866250121/)
 
 ## License
