@@ -52,7 +52,7 @@ app.post("/api/notes", (req, res) => {
       const newNote = {
         title: db[i].title,
         text: db[i].text,
-        id: i
+        id: i+1
       };
       newNoteList.push(newNote);
     }
@@ -94,5 +94,5 @@ app.delete("/api/notes/:id", (req, res) => {
 // // =============================================================================
 
 app.listen(PORT, function () {
-  console.log("App listening on PORT: " + PORT);
+  console.log("App listening on this special PORT: " + PORT + " Have fun!");
 });
