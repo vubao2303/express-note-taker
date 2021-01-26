@@ -18,6 +18,8 @@ app.use(express.json());
 // Route to static folder.
 app.use(express.static('public'));
 
+
+
 // ROUTERS
 // ====================================================
 // If no matching route is found default to home
@@ -52,10 +54,8 @@ app.post("/api/notes", (req, res) => {
         text: db[i].text,
         id: i
       };
-
       newNoteList.push(newNote);
     }
-
     fs.writeFile(path.join(__dirname, "/db/db.json"), JSON.stringify(newNoteList, null, 2), (err) => {
       if (err) throw err;
       res.json(req.body);
