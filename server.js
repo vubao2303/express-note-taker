@@ -1,75 +1,3 @@
-// // MAIN COURSE !
-// var express = require("express");
-
-// // set up express
-// var app = express();
-// var PORT = process.env.PORT || 2303;
-
-
-
-// // handle data parsing
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-
-
-
-// app.use(express.static('public'));
-
-// // ================================================================================
-// // ROUTER
-
-// require("routes/apiRoutes")(app);
-// require("routes/htmlappRoutes")(app);
-
-// // LISTENER
-// // The below code effectively "starts" our server
-// // =============================================================================
-
-// app.listen(PORT, function() {
-//   console.log("App listening on PORT: " + PORT);
-// });
-
-// IM very tired but let try this again 
-
-
-
-// DEPENDENCIES
-// // ====================================================
-// const express = require('express');
-
-
-// // SERVER CONFIGURATION
-// // ====================================================
-// // Create server
-// const app = express();
-
-// // Listen for port, or default.
-// const PORT = process.env.PORT || 2303;
-
-// // Body parsers.
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-
-// // Route to static folder.
-// app.use(express.static('public'));
-
-
-// // ROUTERS
-// // ====================================================
-// require("./routes/apiRoutes")(app); // Route to api.
-// require("./routes/htmlappRoutes")(app); // Route to html.
-
-
-// // // LISTENER
-// // // The below code effectively "starts" our server
-// // // =============================================================================
-
-// app.listen(PORT, function() {
-//   console.log("App listening on PORT: " + PORT);
-// });
-
-
-// all together because I don't know how to split them 
 // DEPENDENCIES
 // ====================================================
 const express = require('express');
@@ -86,11 +14,9 @@ const PORT = process.env.PORT || 2303;
 // Body parsers.
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 // Route to static folder.
 app.use(express.static('public'));
-
-
-
 
 // ROUTERS
 // ====================================================
@@ -162,10 +88,6 @@ app.delete("/api/notes/:id", (req, res) => {
     });
   });
 });
-
-
-
-
 
 // // LISTENER
 // // The below code effectively "starts" our server
