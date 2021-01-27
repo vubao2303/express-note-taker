@@ -228,9 +228,7 @@ app.post("/api/notes", (req, res) => {
     if (err) throw err;
     const db = JSON.parse(data);
     const newNoteList = [];
-
     db.push(req.body);
-
     for (let i = 0; i < db.length; i++) {
       const newNote = {
         title: db[i].title,
