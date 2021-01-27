@@ -2,18 +2,22 @@
 
 Using express to build a note taker page.The web app will begin to be hosted on localhost:2303. The note taker interface is displayed where the user can view previously saved notes, create new notes and delete notes.
 
+
+## Demo-video 
+
+[Demo Video](https://drive.google.com/file/d/1u8IG8SFXvw5tpnljcymROpsD46BvJBTT/view)  
+
 ![Site](frontpage.png)
 
-## Site-video 
-[Demo Video]()  
 
 ## Heroku-Deployed
 
+[Deployed Link](https://glacial-harbor-07122.herokuapp.com/)  
 
 # Table of Contents 
 [Tittle](#express-note-taker)
 
-[Guide Video](#Guide-Video)
+[Demo Video](#Demo-video )
 
 [Heroku](#Heroku-Deployed)
 
